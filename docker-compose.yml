@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  postgres-client:
+    build: .
+    container_name: postgres-client
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_HOST=postgres-server
+      - DB_NAME=mydb
+      - DB_USER=admin
+      - DB_PASS=adminpass
+    depends_on:
+      - postgres-server
+
+  postgres-server:
+    image: postgres:14
+    container_name: postgres-server
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: adminpass
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
